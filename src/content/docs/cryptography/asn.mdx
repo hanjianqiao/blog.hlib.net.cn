@@ -8,7 +8,7 @@ template: doc
 
 PEM格式可以简单理解为如下的格式
 
-```PEM
+```txt
 -----BEGINE {Command Label}-----
 {BASE64编码的数据}
 -----END {Command Label}-----
@@ -88,7 +88,7 @@ The Length field in a TLV triplet identifies the number of bytes encoded in the 
 
 The RSA Public key PEM file is specific for RSA keys. It starts and ends with the tags:
 
-```PEM
+```txt
 -----BEGIN RSA PUBLIC KEY-----
 BASE64 ENCODED DATA
 -----END RSA PUBLIC KEY-----
@@ -96,7 +96,7 @@ BASE64 ENCODED DATA
 
 Within the base64 encoded data, the following DER structure is present:
 
-```ASN.1
+```txt
 RSAPublicKey ::= SEQUENCE {
     modulus         INTEGER,  -- n
     publicExponent  INTEGER   -- e
@@ -105,7 +105,7 @@ RSAPublicKey ::= SEQUENCE {
 
 例如有下面的公钥：
 
-```PEM
+```txt
 -----BEGIN RSA PUBLIC KEY-----
 MIGJAoGBANrSIpUCEmDuP/UaxlRhVQM+BXGxukQRvOWd44326pA64GEEVkoCNrJJ
 mfMSiD0d56QqJ82pLFRTmXTnxx3gw08/1o7ZIoIgepVncM6YRb03+9Vp4/3ZT6QX
@@ -115,7 +115,7 @@ G62lNunFpey525z0OdQTaHtA5IurTDHh+pu5E+7sY+Mp03MA3WhHAgMBAAE=
 
 将内部BASE64编码数据转换成HEX后：
 
-```HEX
+```txt
 30818902818100da d22295021260ee3f
 f51ac6546155033e 0571b1ba4411bce5
 9de38df6ea903ae0 6104564a0236b249
@@ -129,7 +129,7 @@ f51ac6546155033e 0571b1ba4411bce5
 
 尝试解析：
 
-```raw
+```txt
 30 81 89 -- SEQUENCE length: 89
     02 81 81    -- INTEGER length: 81
         00  -- Unused bits: 00
@@ -142,7 +142,7 @@ f51ac6546155033e 0571b1ba4411bce5
 
 The RSA private key PEM file is specific for RSA keys. It starts and ends with the tags:
 
-```PEM
+```txt
 -----BEGIN RSA PRIVATE KEY-----
 BASE64 ENCODED DATA
 -----END RSA PRIVATE KEY-----
@@ -150,7 +150,7 @@ BASE64 ENCODED DATA
 
 Within the base64 encoded data, the following DER structure is present:
 
-```PEM
+```txt
 RSAPrivateKey ::= SEQUENCE {
     version   Version,
     modulus   INTEGER,  -- n
@@ -167,7 +167,7 @@ RSAPrivateKey ::= SEQUENCE {
 
 例如有以下私钥：
 
-```PEM
+```txt
 -----BEGIN RSA PRIVATE KEY-----
 MIICXgIBAAKBgQDa0iKVAhJg7j/1GsZUYVUDPgVxsbpEEbzlneON9uqQOuBhBFZK
 AjaySZnzEog9HeekKifNqSxUU5l058cd4MNPP9aO2SKCIHqVZ3DOmEW9N/vVaeP9
@@ -187,7 +187,7 @@ fYWb4Myjt3okO03ibasZk6tGScIKAksJrIWVNz5gCDejPKLIrxh4XfHgchrHvua1
 
 BASE64转HEX得到：
 
-```HEX
+```txt
 3082025e02010002 818100dad2229502
 1260ee3ff51ac654 6155033e0571b1ba
 4411bce59de38df6 ea903ae06104564a
@@ -231,7 +231,7 @@ d0c0fea7435df4e8 cf5ce7dd5123591b
 
 一步步解析将得到：
 
-```ASN.1
+```txt
 30 82 02 5e -- SEQUENCE length: 025e
     02  01  -- INTEGER length: 01
         00
@@ -263,7 +263,7 @@ d0c0fea7435df4e8 cf5ce7dd5123591b
 
 Because RSA is not used exclusively inside X509, SSL and TLS, a more generic key format, PKCS#8, is available. It identifies the type of public key and contains the relevant data. It starts and ends with the tags:
 
-```PEM
+```txt
 -----BEGIN PUBLIC KEY-----
 BASE64 ENCODED DATA
 -----END PUBLIC KEY-----
@@ -271,7 +271,7 @@ BASE64 ENCODED DATA
 
 Within the base64 encoded data, the following DER structure is present:
 
-```ASN.1
+```txt
 PublicKeyInfo ::= SEQUENCE {
     algorithm   AlgorithmIdentifier,
     PublicKey   BIT STRING
@@ -287,7 +287,7 @@ So, for an RSA public key, the OID is 1.2.840.113549.1.1.1, and the RSAPublicKey
 
 例如下面的公钥：
 
-```PEM
+```txt
 -----BEGIN PUBLIC KEY-----
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsT2Eo8r5lYQUKc3Lg30K
 e/MXIdPi0suek4uOERY6U1kh7sMMP4FDrR0xf2vtLNfu8x+WlHYroTLRSPtSBPV5
@@ -301,7 +301,7 @@ wwIDAQAB
 
 将BASE64数据转换为HEX：
 
-```HEX
+```txt
 30820122300d0609 2a864886f70d0101
 0105000382010f00 3082010a02820101
 00b13d84a3caf995 841429cdcb837d0a
@@ -325,14 +325,14 @@ c30203010001
 
 按照TLV的模式尝试进行解析。首先开头第一个字节`0x30`对应`SEQUENCE`，后续一个字节`0x82`的最高位为`1`，所以这个字节将表示后续有几个字节表示数据长度，即`0x82 & 0x7f`，也就是后续两字节表示长度：`0x0122`，即后续290个字节是数据，正好是剩下全部的数据，得到初步结果：
 
-```HEX
+```txt
 30 82 01 22 -- SEQUENCE
     300d06092a864886f ....
 ```
 
 继续解析得到
 
-```HEX
+```txt
     30 82 01 22 -- SEQUENCE length: 0122
         30 0d   -- SEQUENCE length: 0d
             06 09   -- OBJECT IDENTIFIER length: 09
@@ -345,7 +345,7 @@ c30203010001
 
 到这里，第一层解析完毕，最后的`BIT STRING`是公钥`(n, e)`编码后的结果，继续解析：
 
-```HEX
+```txt
     30 82 01 0a -- SEQUENCE length: 010a
         02 82 01 01 -- INTEGER length: 0101
             00b13d84a3caf995841429cdcb837d0a7bf31721d3e2d2cb9e938b8e11163a535921eec30c3f8143ad1d317f6bed2cd7eef31f9694762ba132d148fb5204f57969458b0cccc0e942f405e5f861b03119a3933e4e5b24cd11379f6b5f8030289a336eef6aac592a9fa20fcb8b45f55e8e97e98b58bbcd87686a830b1c6f69bd214ec9254ce6d67d49b7eedbde3fa89890ac4db46c34cb123fcedbac99711cd6d9866796dbd20d0068db7abd19789b41cf3e4885403853c4981ec35923161307e45a05777376589bd1dea6e81441110bd6e21cbf9120eb50c0b3f4ccc6fa08edcf8a074a75cde6a762e8ecfee35904cc6608e78bec4ed4ec4e91698610220278a1c3
@@ -357,7 +357,7 @@ c30203010001
 
 Because RSA is not used exclusively inside X509, SSL and TLS, a more generic key format, PKCS#8, is available. It identifies the type of private key and contains the relevant data. The unencrypted PKCS#8 encoded data starts and ends with the tags:
 
-```PEM
+```txt
 -----BEGIN PRIVATE KEY-----
 BASE64 ENCODED DATA
 -----END PRIVATE KEY-----
@@ -365,7 +365,7 @@ BASE64 ENCODED DATA
 
 Within the base64 encoded data, the following DER structure is present:
 
-```ASN.1
+```txt
 PrivateKeyInfo ::= SEQUENCE {
     version Version,
     algorithm   AlgorithmIdentifier,
@@ -382,7 +382,7 @@ So for an RSA private key, the OID is 1.2.840.113549.1.1.1, and the RSAPrivateKe
 
 The encrypted PKCS#8 encoded data starts and ends with the tags:
 
-```PEM
+```txt
 -----BEGIN ENCRYPTED PRIVATE KEY-----
 BASE64 ENCODED DATA
 -----END ENCRYPTED PRIVATE KEY-----
@@ -390,7 +390,7 @@ BASE64 ENCODED DATA
 
 Within the base64 encoded data, the following DER structure is present:
 
-```ASN.1
+```txt
 EncryptedPrivateKeyInfo ::= SEQUENCE {
     encryptionAlgorithm  EncryptionAlgorithmIdentifier,
     encryptedDataEncryptedData
@@ -405,7 +405,7 @@ The EncryptedData OCTET STRING is a PKCS#8 PrivateKeyInfo, as described earlier.
 
 参考上面私钥的解析流程，例如下面的私钥：
 
-```PEM
+```txt
 -----BEGIN PRIVATE KEY-----
 MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCxPYSjyvmVhBQp
 zcuDfQp78xch0+LSy56Ti44RFjpTWSHuwww/gUOtHTF/a+0s1+7zH5aUdiuhMtFI
@@ -438,7 +438,7 @@ uB/3IQ01eT8yujJvWNBn9K4=
 
 BASE64转换HEX后得到：
 
-```binary
+```txt
 308204bd02010030 0d06092a864886f7
 0d01010105000482 04a7308204a30201
 000282010100b13d 84a3caf995841429
@@ -520,7 +520,7 @@ ae
 
 不断解析，我们将得到：
 
-```ASN.1
+```txt
 SEQUENCE (3 elem)
     INTEGER 0
     SEQUENCE (2 elem)
