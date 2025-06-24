@@ -7,6 +7,7 @@ export default defineConfig({
 	integrations: [
 		starlight({
 			title: '智晦',
+			pagefind: false,
 			defaultLocale: 'zh-CN',
 			routeMiddleware: './src/middleware/routeMiddleware.ts',
 			social: {
@@ -16,10 +17,6 @@ export default defineConfig({
 				PageFrame: './src/components/PageFrame.astro',
 			},
 			sidebar: [
-				{
-					label: '捐赠支持',
-					autogenerate: { directory: 'sponsor' },
-				},
 				{
 					label: '密码与密码运算',
 					autogenerate: { directory: 'cryptography' },

@@ -14,9 +14,9 @@
     "@astrojs/starlight": "^0.32.6",
     "@expressive-code/plugin-shiki": "^0.41.2",
     "astro": "^5.6.1",
+    "shiki": "^3.7.0",
     "sharp": "^0.32.5"
   },
   "devDependencies": {
-    "shiki": "^3.7.0"
   }
 }
