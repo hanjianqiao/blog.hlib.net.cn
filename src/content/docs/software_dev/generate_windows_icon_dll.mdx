@@ -1,0 +1,38 @@
+---
+title: 生成Windows图标DLL
+description: A guide in my new Starlight docs site.
+template: doc
+---
+
+
+## 步骤
+
+### 1、材料准备
+
+* 需要打包在一起得`ico`文件
+* 编写配置文件，例如`icon.rc`
+    ```txt
+    IDI_ICONS0	ICON "favicon.ico"
+    IDI_ICONS1	ICON "favicon (1).ico"
+    IDI_ICONS2	ICON "favicon (2).ico"
+    IDI_ICONS3	ICON "favicon (3).ico"
+    IDI_ICONS4	ICON "favicon (4).ico"
+    ```
+
+### 2、由`rc`文件生成`res`文件
+
+```bash
+"D:\Windows Kits\10\bin\10.0.26100.0\x64\rc.exe" /r /fo icons.res /v icons.rc
+```
+
+### 3、使用`res`文件生成`dll`
+
+```bash
+"D:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.43.34808\bin\Hostx64\x64\link.exe" /out:icons.dll /dll /machine:x86 /noentry icons.res
+```
+
+### 4、使用
+
+在注册表中就可以使用生成得`dll`作为图标了，例如
+`/path/to/icons.dll,2`
+代表使用第三个ico作为图标

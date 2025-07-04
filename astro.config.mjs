@@ -18,8 +18,12 @@ export default defineConfig({
 			},
 			sidebar: [
 				{
-					label: '密码与密码运算',
+					label: '密码安全',
 					autogenerate: { directory: 'cryptography' },
+				},
+				{
+					label: '网络安全',
+					autogenerate: { directory: 'cybersecurity' },
 				},
 				{
 					label: '操作系统',
@@ -28,6 +32,14 @@ export default defineConfig({
 				{
 					label: '实践杂谈',
 					autogenerate: { directory: 'practical_talk' },
+				},
+				{
+					label: 'C++笔记',
+					autogenerate: { directory: 'cpp_notes' },
+				},
+				{
+					label: '软件开发',
+					autogenerate: { directory: 'software_dev' },
 				},
 			],
 		}),
